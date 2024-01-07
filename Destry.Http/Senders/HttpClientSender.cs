@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Destry.Http.Parsers;
 
 namespace Destry.Http.Senders;
@@ -19,16 +20,18 @@ public sealed class HttpClientSender : Sender
 
     public override async Task<T> SendHttpRequestAsync<T>(
         string httpMethod,
-        [StringSyntax("Route")] string path)
+        [StringSyntax("Route")] string resource)
     {
         var method = HttpMethod.Parse(httpMethod);
-        var parametrizedPath = ApplyParams(path);
+        var uri = BuildUri(resource);
 
         throw new NotImplementedException();
     }
 
     private string ApplyParams(string path)
     {
+        if (_params.Count == 0) return path;
+
         var result = path;
         var @params = path.ParseParams();
 
@@ -41,5 +44,30 @@ public sealed class HttpClientSender : Sender
         }
 
         return result;
+    }
+
+    private string ApplyQuery(string path)
+    {
+        if (_queries.Count == 0) return path;
+
+        var stringBuilder = new StringBuilder(path);
+
+        foreach (var (query, i) in _queries.Select((query, i) => (query, i)))
+        {
+            var separator = i == 0 ? "?" : "&";
+            stringBuilder.Append($"{separator}{query.Key}={query.Value}");
+        }
+
+        return stringBuilder.ToString();
+    }
+
+    private Uri BuildUri(string resource)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(_baseUrl);
+
+        var parametrizedResource = ApplyParams(resource);
+        var queriedResource = ApplyQuery(parametrizedResource);
+
+        return new Uri($"{_baseUrl}/{queriedResource}");
     }
 }
