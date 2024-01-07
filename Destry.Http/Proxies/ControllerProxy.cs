@@ -65,9 +65,9 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
         //return await _sender.SendHttpRequestAsync<T>(
         // sendAttribute.Method.Method,
         // sendAttribute.Path); - with dynamic T
-        return sendHttpRequestMethod.Invoke(_sender, [
+        return await (Task<object>) sendHttpRequestMethod.Invoke(_sender, [
             sendAttribute.Method.Method,
             sendAttribute.Path
-        ]);
+        ])!;
     }
 }
