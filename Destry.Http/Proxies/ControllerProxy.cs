@@ -29,20 +29,30 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
 
         foreach (var (parameter, i) in parameters.Select((parameter, i) => (parameter, i)))
         {
+            if (args?[i] is null) break;
+
             var dataAttributes = parameter.GetCustomAttributes(false);
 
             foreach (var dataAttribute in dataAttributes)
             {
                 if (dataAttribute is BodyAttribute)
-                    _sender.SetBody(args[i]);
+                    _sender.SetBody(args[i]!);
 
                 if (dataAttribute is QueryAttribute queryAttribute)
-                    _sender.AddQuery(queryAttribute.FieldName ?? parameter.Name ?? "",
-                        args[i] as string);
+                {
+                    if (args[i] is string arg)
+                        _sender.AddQuery(queryAttribute.FieldName ?? parameter.Name ?? "", arg);
+
+                    throw new ArgumentException("[Query] can be applied only on string type.");
+                }
 
                 if (dataAttribute is ParamAttribute paramAttribute)
-                    _sender.AddParam(paramAttribute.FieldName ?? parameter.Name ?? "",
-                        args[i] as string);
+                {
+                    if (args[i] is string arg)
+                        _sender.AddParam(paramAttribute.FieldName ?? parameter.Name ?? "", arg);
+
+                    throw new ArgumentException("[Param] can be applied only on string type.");
+                }
             }
         }
 
