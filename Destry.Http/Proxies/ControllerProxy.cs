@@ -1,4 +1,5 @@
 using System.Reflection;
+using Destry.Http.Data;
 using Destry.Http.Methods;
 
 namespace Destry.Http.Proxies;
@@ -24,8 +25,29 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
             throw new Exception(
                 "To make request callable you must use any of Send attribute on method"); // TODO: NotSendableMethodException
 
-        var returnType = targetMethod.ReturnType;
+        var parameters = targetMethod.GetParameters();
 
+        foreach (var (parameter, i) in parameters.Select((parameter, i) => (parameter, i)))
+        {
+            var dataAttributes = parameter.GetCustomAttributes(false);
+
+            foreach (var dataAttribute in dataAttributes)
+            {
+                if (dataAttribute is BodyAttribute)
+                    _sender.SetBody(args[i]);
+
+                if (dataAttribute is QueryAttribute queryAttribute)
+                    _sender.AddQuery(queryAttribute.FieldName ?? parameter.Name ?? "",
+                        args[i] as string);
+
+                if (dataAttribute is ParamAttribute paramAttribute)
+                    _sender.AddParam(paramAttribute.FieldName ?? parameter.Name ?? "",
+                        args[i] as string);
+            }
+        }
+
+
+        var returnType = targetMethod.ReturnType;
         var sendHttpRequestMethod =
             _sender.GetType().GetMethod("SendHttpRequestAsync")!.MakeGenericMethod([returnType]);
 
