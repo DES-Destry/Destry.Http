@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Json;
 using System.Text;
 using Destry.Http.Parsers;
 
@@ -23,7 +24,7 @@ public sealed class HttpClientSender : Sender
         [StringSyntax("Route")] string resource)
     {
         var method = HttpMethod.Parse(httpMethod);
-        var uri = BuildUri(resource);
+        var request = BuildRequest(method, resource);
 
         throw new NotImplementedException();
     }
@@ -69,5 +70,24 @@ public sealed class HttpClientSender : Sender
         var queriedResource = ApplyQuery(parametrizedResource);
 
         return new Uri($"{_baseUrl}/{queriedResource}");
+    }
+
+    private HttpRequestMessage BuildRequest(HttpMethod method, string resource)
+    {
+        var uri = BuildUri(resource);
+
+        var message = new HttpRequestMessage
+        {
+            Method = method,
+            RequestUri = uri
+        };
+
+        foreach (var header in _headers)
+            message.Headers.Add(header.Key, header.Value);
+
+        if (_body != null && method != HttpMethod.Get)
+            message.Content = JsonContent.Create(_body);
+
+        return message;
     }
 }
