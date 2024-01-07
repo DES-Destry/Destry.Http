@@ -7,6 +7,8 @@ namespace Destry.Http.Senders;
 
 public sealed class HttpClientSender : Sender
 {
+    private readonly HttpClient _client = new();
+
     private readonly Dictionary<string, string> _headers = new();
     private readonly Dictionary<string, string> _params = new();
     private readonly Dictionary<string, string> _queries = new();
@@ -19,14 +21,18 @@ public sealed class HttpClientSender : Sender
     public override void AddParam(string name, string value) => _params.Add(name, value);
     public override void SetBody(object body) => _body = body;
 
-    public override async Task<T> SendHttpRequestAsync<T>(
+    public override async Task<T?> SendHttpRequestAsync<T>(
         string httpMethod,
-        [StringSyntax("Route")] string resource)
+        [StringSyntax("Route")] string resource) where T : default
     {
         var method = HttpMethod.Parse(httpMethod);
-        var request = BuildRequest(method, resource);
 
-        throw new NotImplementedException();
+        var request = BuildRequest(method, resource);
+        var response = await _client.SendAsync(request);
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<T>();
     }
 
     private string ApplyParams(string path)

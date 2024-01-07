@@ -8,5 +8,5 @@ public abstract class Sender
     public abstract void AddParam(string name, string? value);
     public abstract void SetBody(object body);
 
-    public abstract Task<T> SendHttpRequestAsync<T>(string httpMethod, string path);
+    public abstract Task<T?> SendHttpRequestAsync<T>(string httpMethod, string path);
 }
