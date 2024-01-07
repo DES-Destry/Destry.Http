@@ -22,7 +22,7 @@ public sealed class ControllerBuilder
         return this;
     }
 
-    public T InstanceOf<T>() where T : class
+    public T FromInterface<T>() where T : class
     {
         var baseUrl = _baseUrl;
         var type = typeof(T);
