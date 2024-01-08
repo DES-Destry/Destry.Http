@@ -33,47 +33,8 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
         {
             if (args?[i] is null) break;
 
-            var dataAttributes = parameter.GetCustomAttributes(false);
-
-            foreach (var dataAttribute in dataAttributes)
-            {
-                if (dataAttribute is BodyAttribute)
-                    _sender.SetBody(args[i]!);
-
-                if (dataAttribute is QueryAttribute queryAttribute)
-                {
-                    if (args[i] is string arg)
-                    {
-                        _sender.AddQuery(queryAttribute.FieldName ?? parameter.Name ?? "", arg);
-                        continue;
-                    }
-
-                    throw new ArgumentException("[Query] can be applied only on string type.");
-                }
-
-                if (dataAttribute is ParamAttribute paramAttribute)
-                {
-                    if (args[i] is string arg)
-                    {
-                        _sender.AddParam(paramAttribute.FieldName ?? parameter.Name ?? "", arg);
-                        continue;
-                    }
-
-                    throw new ArgumentException("[Param] can be applied only on string type.");
-                }
-
-                if (dataAttribute is QueriesAttribute)
-                {
-                    var queries = GetStringsRecursively(args[i]);
-                    foreach (var query in queries) _sender.AddQuery(query.Key, query.Value);
-                }
-
-                if (dataAttribute is ParamsAttribute)
-                {
-                    var @params = GetStringsRecursively(args[i]);
-                    foreach (var param in @params) _sender.AddParam(param.Key, param.Value);
-                }
-            }
+            var dataAttributes = parameter.GetCustomAttribute<DataAttribute>();
+            _sender = dataAttributes?.ApplyData(_sender, args[i]!) ?? _sender;
         }
 
 
@@ -90,41 +51,5 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
             sendAttribute.Method.Method,
             sendAttribute.Path
         ])!;
-    }
-
-    private Dictionary<string, string> GetStringsRecursively(
-        object? obj,
-        int level = 1)
-    {
-        Dictionary<string, string> result = [];
-        const int maxDeep = 10;
-
-        if (level >= maxDeep || obj is null) return result;
-
-        var type = obj.GetType();
-        var properties = type.GetProperties();
-
-        foreach (var property in properties)
-        {
-            if (property.PropertyType.IsPrimitive)
-            {
-                var attribute = property.GetCustomAttribute<DataAttribute>(true);
-
-                //TODO: change case for property.Name
-                result.TryAdd(attribute?.FieldName ?? property.Name,
-                    (property.GetValue(obj) as string)!);
-
-                continue;
-            }
-
-            if (property.PropertyType.IsClass)
-            {
-                var nestedStrings = GetStringsRecursively(property.GetValue(obj), level++);
-                foreach (var nestedString in nestedStrings)
-                    result.TryAdd(nestedString.Key, nestedString.Value);
-            }
-        }
-
-        return result;
     }
 }
