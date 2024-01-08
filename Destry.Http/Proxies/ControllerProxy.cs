@@ -5,7 +5,7 @@ using Destry.Http.Methods;
 
 namespace Destry.Http.Proxies;
 
-internal sealed class ControllerProxy<T> : DispatchProxy where T : class
+internal class ControllerProxy<T> : DispatchProxy where T : class
 {
     private string? _baseUrl;
     private Sender? _sender;
@@ -16,7 +16,7 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
         _sender = sender;
     }
 
-    protected override async Task<object?> Invoke(MethodInfo? targetMethod, object?[]? args)
+    protected override dynamic Invoke(MethodInfo? targetMethod, object?[]? args)
     {
         ArgumentNullException.ThrowIfNull(targetMethod);
         ArgumentNullException.ThrowIfNull(_baseUrl);
@@ -41,15 +41,17 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
 
 
         _sender.SetBaseUrl(_baseUrl);
-        var returnType = targetMethod.ReturnType;
+        var returnTask = targetMethod.ReturnType;
+        var returnTypes = returnTask.GetGenericArguments();
+
+        if (!returnTask.Name.Contains("Task") && returnTask.GetGenericArguments().Length == 0)
+            throw new Exception("Method must return Task<?> type.");
+
         var sendHttpRequestMethod =
-            _sender.GetType().GetMethod("SendHttpRequestAsync")!.MakeGenericMethod([returnType]);
+            _sender.GetType().GetMethod("SendHttpRequestAsync")!
+                .MakeGenericMethod([returnTypes[0]]);
 
-
-        //return await _sender.SendHttpRequestAsync<T>(
-        // sendAttribute.Method.Method,
-        // sendAttribute.Path); - with dynamic T
-        return await (Task<object>) sendHttpRequestMethod.Invoke(_sender, [
+        return sendHttpRequestMethod.Invoke(_sender, [
             sendAttribute.Method.Method,
             sendAttribute.Path
         ])!;
