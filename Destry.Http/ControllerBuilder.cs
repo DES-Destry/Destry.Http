@@ -27,11 +27,9 @@ public sealed class ControllerBuilder
         var baseUrl = _baseUrl;
         var type = typeof(T);
 
-        if (type.GetCustomAttribute(typeof(ControllerAttribute), false) is not ControllerAttribute
-            controllerAttribute)
-            throw new Exception();
+        var controllerAttribute = type.GetCustomAttribute<ControllerAttribute>(false);
 
-        if (controllerAttribute.BaseUrl is not null)
+        if (controllerAttribute?.BaseUrl is not null)
             baseUrl = controllerAttribute.BaseUrl;
 
         if (baseUrl is null)
