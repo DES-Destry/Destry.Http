@@ -57,6 +57,7 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
         }
 
 
+        _sender.SetBaseUrl(_baseUrl);
         var returnType = targetMethod.ReturnType;
         var sendHttpRequestMethod =
             _sender.GetType().GetMethod("SendHttpRequestAsync")!.MakeGenericMethod([returnType]);
