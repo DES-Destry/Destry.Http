@@ -1,5 +1,6 @@
 using System.Reflection;
 using Destry.Http.Data;
+using Destry.Http.Exceptions;
 using Destry.Http.Methods;
 
 namespace Destry.Http.Proxies;
@@ -26,8 +27,7 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
         var sendAttribute = targetMethod.GetCustomAttribute<SendAttribute>(true);
 
         if (sendAttribute is null)
-            throw new Exception(
-                "To make request callable you must use any of Send attribute on method"); // TODO: NotSendableMethodException
+            throw new NotCallableMethodException(targetMethod);
 
         var parameters = targetMethod.GetParameters();
 
