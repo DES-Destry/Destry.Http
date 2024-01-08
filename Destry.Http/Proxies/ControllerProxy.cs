@@ -41,15 +41,15 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
 
         _sender.SetBaseUrl(_baseUrl);
-        var returnTask = targetMethod.ReturnType;
-        var returnTypes = returnTask.GetGenericArguments();
+        var returnType = targetMethod.ReturnType;
+        var returnTypes = returnType.GetGenericArguments();
 
-        if (!returnTask.Name.Contains("Task") && returnTask.GetGenericArguments().Length == 0)
-            throw new Exception("Method must return Task<?> type.");
+        if (returnType.Name.Contains("Task") && returnType.GetGenericArguments().Length != 0)
+            returnType = returnTypes[0];
 
         var sendHttpRequestMethod =
             _sender.GetType().GetMethod("SendHttpRequestAsync")!
-                .MakeGenericMethod([returnTypes[0]]);
+                .MakeGenericMethod([returnType]);
 
         return sendHttpRequestMethod.Invoke(_sender, [
             sendAttribute.Method.Method,
