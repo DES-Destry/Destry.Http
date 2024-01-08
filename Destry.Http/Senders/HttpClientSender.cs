@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 using System.Text;
 using Destry.Http.Parsers;
@@ -33,7 +32,7 @@ internal sealed class HttpClientSender : Sender
 
     public override async Task<T?> SendHttpRequestAsync<T>(
         string httpMethod,
-        [StringSyntax("Route")] string resource) where T : default
+        string resource) where T : default
     {
         var method = HttpMethod.Parse(httpMethod);
 
