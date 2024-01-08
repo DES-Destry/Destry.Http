@@ -76,7 +76,7 @@ var controller = new ControllerBuilder()
 
 ## Customization
 
-By default `Destry.Http` using `System.Net.Http.HttpClient`. It's highly recommend to use it, but still you can change HTTP request sending behaviour in edge cases. Extend `Sender` class to make you own implementation.
+By default `Destry.Http` using `System.Net.Http.HttpClient`. It's highly recommend to use it, but you still can change HTTP request sending behaviour in edge cases. Extend `Sender` class to make you own implementation.
 
 ```csharp
 using SomeAwesomeHttpClient;
@@ -96,7 +96,7 @@ internal sealed class YourAwesomeSender : Sender
         // Delete all data what you set with SetBaseUrl, SetBody, AddQuery, etc.
     }
 
-    public override async Task<T?> SendHttpRequestAsync<T>(string httpMethod, string resource) where T : default
+    public override async Task<T> SendHttpRequestAsync<T>(string httpMethod, string resource)
     {
         // Sending request behaviour
     }
