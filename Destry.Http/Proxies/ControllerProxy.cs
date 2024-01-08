@@ -111,7 +111,7 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
                 var attribute = property.GetCustomAttribute<DataAttribute>(true);
 
                 //TODO: change case for property.Name
-                result.Add(attribute?.FieldName ?? property.Name,
+                result.TryAdd(attribute?.FieldName ?? property.Name,
                     (property.GetValue(obj) as string)!);
 
                 continue;
@@ -121,7 +121,7 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
             {
                 var nestedStrings = GetStringsRecursively(property.GetValue(obj), level++);
                 foreach (var nestedString in nestedStrings)
-                    result.Add(nestedString.Key, nestedString.Value);
+                    result.TryAdd(nestedString.Key, nestedString.Value);
             }
         }
 
