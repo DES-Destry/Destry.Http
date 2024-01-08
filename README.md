@@ -51,7 +51,6 @@ var posts = await controller.GetAllPosts();
 
 Well, you can specify your base url with `ControllerBuilder.WithBaseUrl("url")` and not pass url in `[Controller]` attribute or even not pass `[Controller]` attribute.
 ```csharp
-using Destry.Http.Controller;
 using Destry.Http.Data;
 using Destry.Http.Methods;
 
