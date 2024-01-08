@@ -43,7 +43,10 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
                 if (dataAttribute is QueryAttribute queryAttribute)
                 {
                     if (args[i] is string arg)
+                    {
                         _sender.AddQuery(queryAttribute.FieldName ?? parameter.Name ?? "", arg);
+                        continue;
+                    }
 
                     throw new ArgumentException("[Query] can be applied only on string type.");
                 }
@@ -51,9 +54,24 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
                 if (dataAttribute is ParamAttribute paramAttribute)
                 {
                     if (args[i] is string arg)
+                    {
                         _sender.AddParam(paramAttribute.FieldName ?? parameter.Name ?? "", arg);
+                        continue;
+                    }
 
                     throw new ArgumentException("[Param] can be applied only on string type.");
+                }
+
+                if (dataAttribute is QueriesAttribute)
+                {
+                    var queries = GetStringsRecursively(args[i]);
+                    foreach (var query in queries) _sender.AddQuery(query.Key, query.Value);
+                }
+
+                if (dataAttribute is ParamsAttribute)
+                {
+                    var @params = GetStringsRecursively(args[i]);
+                    foreach (var param in @params) _sender.AddParam(param.Key, param.Value);
                 }
             }
         }
@@ -72,5 +90,41 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
             sendAttribute.Method.Method,
             sendAttribute.Path
         ])!;
+    }
+
+    private Dictionary<string, string> GetStringsRecursively(
+        object? obj,
+        int level = 1)
+    {
+        Dictionary<string, string> result = [];
+        const int maxDeep = 10;
+
+        if (level >= maxDeep || obj is null) return result;
+
+        var type = obj.GetType();
+        var properties = type.GetProperties();
+
+        foreach (var property in properties)
+        {
+            if (property.PropertyType.IsPrimitive)
+            {
+                var attribute = property.GetCustomAttribute<DataAttribute>(true);
+
+                //TODO: change case for property.Name
+                result.Add(attribute?.FieldName ?? property.Name,
+                    (property.GetValue(obj) as string)!);
+
+                continue;
+            }
+
+            if (property.PropertyType.IsClass)
+            {
+                var nestedStrings = GetStringsRecursively(property.GetValue(obj), level++);
+                foreach (var nestedString in nestedStrings)
+                    result.Add(nestedString.Key, nestedString.Value);
+            }
+        }
+
+        return result;
     }
 }
