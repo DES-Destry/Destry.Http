@@ -24,7 +24,7 @@ namespace Destry.AwesomeProject;
 public interface IJsonPlaceholderController
 {
     // Highly reccomend to use Task<*>, http requests are async as rule
-    // Sync methods not tested yet
+    // Sync methods aren't tested yet
     [SendGet("posts")]
     Task<IEnumerable<Post>> GetAllPosts();
     
