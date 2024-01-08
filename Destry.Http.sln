@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destry.Http", "Destry.Http\Destry.Http.csproj", "{932A3F05-FB0C-431E-88EE-72527BC6803C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{FA33595F-1A56-41D5-97AF-E3B02B2AB08D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{240E0B4B-6E80-4704-BB67-1DA99E8FC1E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destry.Http.UnitTests", "Destry.Http.UnitTests\Destry.Http.UnitTests.csproj", "{E000A8A2-C0A3-4A12-9577-140AE0654515}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,13 @@ Global
 		{932A3F05-FB0C-431E-88EE-72527BC6803C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{932A3F05-FB0C-431E-88EE-72527BC6803C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{932A3F05-FB0C-431E-88EE-72527BC6803C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E000A8A2-C0A3-4A12-9577-140AE0654515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E000A8A2-C0A3-4A12-9577-140AE0654515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E000A8A2-C0A3-4A12-9577-140AE0654515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E000A8A2-C0A3-4A12-9577-140AE0654515}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{932A3F05-FB0C-431E-88EE-72527BC6803C} = {FA33595F-1A56-41D5-97AF-E3B02B2AB08D}
+		{E000A8A2-C0A3-4A12-9577-140AE0654515} = {240E0B4B-6E80-4704-BB67-1DA99E8FC1E4}
 	EndGlobalSection
 EndGlobal
