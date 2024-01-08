@@ -6,8 +6,8 @@ namespace Destry.Http.Proxies;
 
 internal sealed class ControllerProxy<T> : DispatchProxy where T : class
 {
-    private string _baseUrl;
-    private Sender _sender;
+    private string? _baseUrl;
+    private Sender? _sender;
 
     public void Initialize(string url, Sender sender)
     {
@@ -18,6 +18,8 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
     protected override async Task<object?> Invoke(MethodInfo? targetMethod, object?[]? args)
     {
         ArgumentNullException.ThrowIfNull(targetMethod);
+        ArgumentNullException.ThrowIfNull(_baseUrl);
+        ArgumentNullException.ThrowIfNull(_sender);
 
         var sendAttribute = targetMethod.GetCustomAttribute<SendAttribute>(true);
 
