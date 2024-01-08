@@ -21,6 +21,8 @@ internal sealed class ControllerProxy<T> : DispatchProxy where T : class
         ArgumentNullException.ThrowIfNull(_baseUrl);
         ArgumentNullException.ThrowIfNull(_sender);
 
+        _sender.Reset();
+
         var sendAttribute = targetMethod.GetCustomAttribute<SendAttribute>(true);
 
         if (sendAttribute is null)
