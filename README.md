@@ -23,7 +23,7 @@ namespace Destry.AwesomeProject;
 [Controller("https://jsonplaceholder.typicode.com")]
 public interface IJsonPlaceholderController
 {
-    // Highly reccomend to use Task<*>, http requests are async as rule
+    // Highly recommend to use Task<*>, http requests are async as rule
     // Sync methods aren't tested yet
     [SendGet("posts")]
     Task<IEnumerable<Post>> GetAllPosts();
