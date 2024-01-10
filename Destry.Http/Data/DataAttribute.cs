@@ -21,6 +21,9 @@ public abstract class DataAttribute : Attribute
 
         foreach (var property in properties)
         {
+            var excludeAttribute = property.GetCustomAttribute<ExcludeFromRequestAttribute>();
+            if (excludeAttribute is not null) continue;
+
             if (property.PropertyType.IsPrimitive)
             {
                 var attribute = property.GetCustomAttribute<PrimitiveDataAttribute>(true);

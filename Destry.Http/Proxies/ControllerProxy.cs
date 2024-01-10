@@ -35,6 +35,9 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
         {
             if (args?[i] is null) break;
 
+            var excludeAttribute = parameter.GetCustomAttribute<ExcludeFromRequestAttribute>();
+            if (excludeAttribute is not null) continue;
+
             var dataAttributes = parameter.GetCustomAttribute<DataAttribute>();
             _sender = dataAttributes?.ApplyData(_sender, args[i]!) ?? _sender;
         }

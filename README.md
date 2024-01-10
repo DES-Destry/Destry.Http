@@ -1,8 +1,10 @@
 # Destry.Http
 
-A NuGet package that allow you quickly build HTTP clients. Just describe an interface with attributes and you will get ready http client with less code compared to other HTTP clients.
+A NuGet package that allow you quickly build HTTP clients. Just describe an interface with attributes and you will get
+ready http client with less code compared to other HTTP clients.
 
 ## Installation (coming soon...)
+
 Find in your NuGet explorer `Destry.Http` package or install it with CLI:
 
 ```bash
@@ -12,6 +14,7 @@ $ dotnet add package Destry.Http
 ## Get started
 
 To get started you need do describe your API with Controller interface. For example:
+
 ```csharp
 using Destry.Http.Controller;
 using Destry.Http.Data;
@@ -40,6 +43,7 @@ public interface IJsonPlaceholderController
 ```
 
 To get ready controller to use, get it with `ControllerBuilder`:
+
 ```csharp
 using Destry.Http;
 
@@ -49,7 +53,9 @@ var posts = await controller.GetAllPosts();
 
 ### Specify base url with `ControllerBuilder`
 
-Well, you can specify your base url with `ControllerBuilder.WithBaseUrl("url")` and not pass url in `[Controller]` attribute or even not pass `[Controller]` attribute.
+Well, you can specify your base url with `ControllerBuilder.WithBaseUrl("url")` and not pass url in `[Controller]`
+attribute or even not pass `[Controller]` attribute.
+
 ```csharp
 using Destry.Http.Data;
 using Destry.Http.Methods;
@@ -75,7 +81,8 @@ var controller = new ControllerBuilder()
 
 ## Customization
 
-By default `Destry.Http` using `System.Net.Http.HttpClient`. It's highly recommend to use it, but you still can change HTTP request sending behaviour in edge cases. Extend `Sender` class to make you own implementation.
+By default `Destry.Http` using `System.Net.Http.HttpClient`. It's highly recommend to use it, but you still can change
+HTTP request sending behaviour in edge cases. Extend `Sender` class to make you own implementation.
 
 ```csharp
 using SomeAwesomeHttpClient;
@@ -118,6 +125,7 @@ var controller = new ControllerBuilder()
 ## All attributes
 
 Use attributes to describe HTTP method:
+
 - [SendGet]
 - [SendHead]
 - [SendPost]
@@ -125,13 +133,13 @@ Use attributes to describe HTTP method:
 - [SendPatch]
 - [SendDelete]
 
-
-
 Use attributes to add data to your request:
+
 - [Body]
 - [Header]
 - [Param]
 - [Query]
-- [ExcludeFromRequest] (coming soon...)
+- [ExcludeFromRequest]
 
-*all data attributes can be used with classes and primitives (except body, that better to use only with classes, but using it with primitives is allowed to)
+*all data attributes can be used with classes and primitives (except body, that better to use only with classes, but
+using it with primitives is allowed to)
