@@ -1,6 +1,6 @@
 namespace Destry.Http.Data;
 
-[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field)]
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class HeaderAttribute : PrimitiveDataAttribute
 {
     public override Sender ApplyData(Sender sender, object data)
