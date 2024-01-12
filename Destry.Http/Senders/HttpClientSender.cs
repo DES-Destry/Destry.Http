@@ -20,16 +20,6 @@ internal sealed class HttpClientSender : Sender
     public override void AddParam(string name, string value) => _params.Add(name, value);
     public override void SetBody(object body) => _body = body;
 
-    public override void Reset()
-    {
-        _headers.Clear();
-        _params.Clear();
-        _queries.Clear();
-
-        _baseUrl = "";
-        _body = null;
-    }
-
     public override async Task<T?> SendHttpRequestAsync<T>(
         string httpMethod,
         string resource) where T : default

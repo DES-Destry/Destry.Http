@@ -22,7 +22,7 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
         ArgumentNullException.ThrowIfNull(_baseUrl);
         ArgumentNullException.ThrowIfNull(_sender);
 
-        _sender.Reset();
+        var sender = _sender.NewInstance();
 
         var sendAttribute = targetMethod.GetCustomAttribute<SendAttribute>(true);
 
@@ -39,11 +39,11 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
             if (excludeAttribute is not null) continue;
 
             var dataAttributes = parameter.GetCustomAttribute<DataAttribute>();
-            _sender = dataAttributes?.ApplyData(_sender, args[i]!) ?? _sender;
+            sender = dataAttributes?.ApplyData(sender, args[i]!) ?? sender;
         }
 
 
-        _sender.SetBaseUrl(_baseUrl);
+        sender.SetBaseUrl(_baseUrl);
         var returnType = targetMethod.ReturnType;
         var returnTypes = returnType.GetGenericArguments();
 
@@ -51,10 +51,10 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
             returnType = returnTypes[0];
 
         var sendHttpRequestMethod =
-            _sender.GetType().GetMethod("SendHttpRequestAsync")!
+            sender.GetType().GetMethod("SendHttpRequestAsync")!
                 .MakeGenericMethod([returnType]);
 
-        return sendHttpRequestMethod.Invoke(_sender, [
+        return sendHttpRequestMethod.Invoke(sender, [
             sendAttribute.Method.Method,
             sendAttribute.Path
         ])!;

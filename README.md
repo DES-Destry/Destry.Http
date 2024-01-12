@@ -97,11 +97,6 @@ internal sealed class YourAwesomeSender : Sender
     public override void AddParam(string name, string value) => // Add param value
     public override void SetBody(object body) => // Set your body
 
-    public override void Reset()
-    {
-        // Delete all data what you set with SetBaseUrl, SetBody, AddQuery, etc.
-    }
-
     public override async Task<T> SendHttpRequestAsync<T>(string httpMethod, string resource)
     {
         // Sending request behaviour
