@@ -27,7 +27,9 @@ internal sealed class HttpClientSender : Sender
         var method = HttpMethod.Parse(httpMethod);
 
         var request = BuildRequest(method, resource);
-        var response = await _client.SendAsync(request);
+        var responseTask = _client.SendAsync(request);
+
+        var response = await responseTask.ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
 

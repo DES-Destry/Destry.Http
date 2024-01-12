@@ -57,7 +57,7 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
             returnType = returnTypes[0];
 
         var fromResponseToDataMethod =
-            sender.GetType().GetMethod("FromRawResponseToAsync")!
+            _converter.GetType().GetMethod("FromRawResponseToAsync")!
                 .MakeGenericMethod([returnType]);
 
         return fromResponseToDataMethod.Invoke(_converter, [response])!;
