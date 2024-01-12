@@ -20,9 +20,9 @@ internal sealed class HttpClientSender : Sender
     public override void AddParam(string name, string value) => _params.Add(name, value);
     public override void SetBody(object body) => _body = body;
 
-    public override async Task<T?> SendHttpRequestAsync<T>(
+    public override async Task<HttpRawResponse> SendHttpRequestAsync(
         string httpMethod,
-        string resource) where T : default
+        string resource)
     {
         var method = HttpMethod.Parse(httpMethod);
 
@@ -31,7 +31,12 @@ internal sealed class HttpClientSender : Sender
 
         response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadFromJsonAsync<T>();
+        return new HttpRawResponse
+        {
+            Status = response.StatusCode,
+            // Headers = response.Headers,
+            Data = await response.Content.ReadAsStreamAsync()
+        };
     }
 
     private string ApplyParams(string path)

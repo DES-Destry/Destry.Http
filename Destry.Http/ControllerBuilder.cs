@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Destry.Http.Controller;
+using Destry.Http.Converters;
 using Destry.Http.Proxies;
 using Destry.Http.Senders;
 
@@ -8,11 +9,18 @@ namespace Destry.Http;
 public sealed class ControllerBuilder
 {
     private string? _baseUrl;
+    private Converter _converter = new JsonConverter();
     private Sender _sender = new HttpClientSender();
 
     public ControllerBuilder WithBaseUrl(string url)
     {
         _baseUrl = url;
+        return this;
+    }
+
+    public ControllerBuilder WithConverter(Converter converter)
+    {
+        _converter = converter;
         return this;
     }
 
@@ -36,7 +44,7 @@ public sealed class ControllerBuilder
             throw new NullReferenceException(nameof(baseUrl));
 
         var proxy = DispatchProxy.Create<T, ControllerProxy<T>>();
-        ((ControllerProxy<T>) (object) proxy).Initialize(baseUrl, _sender);
+        ((ControllerProxy<T>) (object) proxy).Initialize(baseUrl, _converter, _sender);
 
         return proxy;
     }
