@@ -47,6 +47,7 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
 
         sender.SetBaseUrl(_baseUrl);
+
         var response =
             await sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
 
@@ -57,9 +58,31 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
             returnType = returnTypes[0];
 
         var fromResponseToDataMethod =
-            _converter.GetType().GetMethod("FromRawResponseToAsync")!
+            _converter?.GetType().GetMethod("FromRawResponseToAsync")!
                 .MakeGenericMethod([returnType]);
 
-        return fromResponseToDataMethod.Invoke(_converter, [response])!;
+        return await (dynamic) fromResponseToDataMethod?.Invoke(_converter, [response])!;
+    }
+
+    private async Task<dynamic> InvokeAsyncOperations(
+        MethodInfo targetMethod,
+        Sender sender,
+        SendAttribute sendAttribute)
+    {
+        var responseTask =
+            sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
+        var response = await responseTask.ConfigureAwait(ConfigureAwaitOptions.ForceYielding);
+
+        var returnType = targetMethod.ReturnType;
+        var returnTypes = returnType.GetGenericArguments();
+
+        if (returnType.Name.Contains("Task") && returnType.GetGenericArguments().Length != 0)
+            returnType = returnTypes[0];
+
+        var fromResponseToDataMethod =
+            _converter?.GetType().GetMethod("FromRawResponseToAsync")!
+                .MakeGenericMethod([returnType]);
+
+        return fromResponseToDataMethod?.Invoke(_converter, [response])!;
     }
 }

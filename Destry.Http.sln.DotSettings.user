@@ -1,5 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bd5dd87b_002D2285_002D41e9_002D885a_002D3fe404a71ebd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="JsonPlaceholderTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=df736a7a_002Dc7ff_002D4146_002D91b6_002D693d9fe14688/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="JsonPlaceholderTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::E000A8A2-C0A3-4A12-9577-140AE0654515::net8.0::Destry.Http.UnitTests.JsonPlaceholderTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
