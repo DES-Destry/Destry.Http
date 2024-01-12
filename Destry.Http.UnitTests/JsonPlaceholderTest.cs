@@ -7,7 +7,7 @@ namespace Destry.Http.UnitTests;
 public class JsonPlaceholderTest(ITestOutputHelper output)
 {
     private readonly IJsonPlaceholderController _jsonPlaceholderController =
-        new ControllerBuilder().FromInterface<IJsonPlaceholderController>();
+        new ControllerBuilder().From<IJsonPlaceholderController>();
 
     [Fact]
     public async Task ItShouldWork()

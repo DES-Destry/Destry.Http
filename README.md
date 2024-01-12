@@ -47,7 +47,7 @@ To get ready controller to use, get it with `ControllerBuilder`:
 ```csharp
 using Destry.Http;
 
-var controller = new ControllerBuilder().FromInterface<IJsonPlaceholderController>();
+var controller = new ControllerBuilder().From<IJsonPlaceholderController>();
 var posts = await controller.GetAllPosts();
 ```
 
@@ -76,7 +76,7 @@ using Destry.Http;
 
 var controller = new ControllerBuilder()
     .WithBaseUrl("https://jsonplaceholder.typicode.com")
-    .FromInterface<IJsonPlaceholderController>();
+    .From<IJsonPlaceholderController>();
 ```
 
 ## Customization
@@ -114,7 +114,7 @@ var sender = new YourAwesomeSender();
 var controller = new ControllerBuilder()
     .WithBaseUrl("https://jsonplaceholder.typicode.com")
     .WithSender(sender)
-    .FromInterface<IJsonPlaceholderController>();
+    .From<IJsonPlaceholderController>();
 ```
 
 ## All attributes
