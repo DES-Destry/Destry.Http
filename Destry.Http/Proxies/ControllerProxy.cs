@@ -69,11 +69,4 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
         return fromResponseToDataMethod?.Invoke(_converter, [response])!;
     }
-
-    // private static object SendRequestAsync(
-    //     Sender sender,
-    //     SendAttribute sendAttribute)
-    // {
-    //     return sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
-    // }
 }
