@@ -4,9 +4,17 @@ namespace Destry.Http.Converters;
 
 internal sealed class JsonConverter : Converter
 {
-    public override async Task<T?> FromRawResponseToAsync<T>(HttpRawResponse response)
+    public override async Task<T?> FromRawResponseToAsync<T>(Task<HttpRawResponse> response)
         where T : default
     {
-        return await Task.FromResult(JsonSerializer.Deserialize<T>(response.Data));
+        var awaited = await response;
+
+        if (!awaited.IsError)
+            return await Task.FromResult(JsonSerializer.Deserialize<T>(awaited.Data!));
+
+        if (awaited.IsError)
+            throw awaited.Exception!;
+
+        return default;
     }
 }

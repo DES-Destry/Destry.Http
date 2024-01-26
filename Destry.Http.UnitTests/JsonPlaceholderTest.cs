@@ -12,9 +12,7 @@ public class JsonPlaceholderTest(ITestOutputHelper output)
     [Fact]
     public async Task ItShouldWork()
     {
-        // var response = (await _jsonPlaceholderController.GetAllPosts())?.ToImmutableArray() ?? [];
-        var responseTask = _jsonPlaceholderController.GetAllPosts();
-        var response = (await responseTask)?.ToImmutableArray() ?? [];
+        var response = (await _jsonPlaceholderController.GetAllPosts())?.ToImmutableArray() ?? [];
         Assert.NotEmpty(response);
 
         output.WriteLine(response.Length.ToString());

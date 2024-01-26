@@ -4,8 +4,11 @@ namespace Destry.Http;
 
 public class HttpRawResponse
 {
-    public HttpStatusCode Status { get; set; }
+    public bool IsError { get; set; }
+    public HttpStatusCode? Status { get; set; }
 
-    public string Data { get; set; }
+    public string? Data { get; set; }
+
+    public Exception? Exception { get; set; }
     // public Dictionary<string, string> Headers { get; set; }
 }

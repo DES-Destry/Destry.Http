@@ -18,7 +18,7 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
         _sender = sender;
     }
 
-    protected override async Task<dynamic> Invoke(MethodInfo? targetMethod, object?[]? args)
+    protected override object Invoke(MethodInfo? targetMethod, object?[]? args)
     {
         ArgumentNullException.ThrowIfNull(targetMethod);
         ArgumentNullException.ThrowIfNull(_baseUrl);
@@ -47,31 +47,15 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
 
         sender.SetBaseUrl(_baseUrl);
-
-        var response =
-            await sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
-
-        var returnType = targetMethod.ReturnType;
-        var returnTypes = returnType.GetGenericArguments();
-
-        if (returnType.Name.Contains("Task") && returnType.GetGenericArguments().Length != 0)
-            returnType = returnTypes[0];
-
-        var fromResponseToDataMethod =
-            _converter?.GetType().GetMethod("FromRawResponseToAsync")!
-                .MakeGenericMethod([returnType]);
-
-        return await (dynamic) fromResponseToDataMethod?.Invoke(_converter, [response])!;
+        return SendRequestAndConvertAsync(targetMethod, sender, sendAttribute);
     }
 
-    private async Task<dynamic> InvokeAsyncOperations(
+    private object SendRequestAndConvertAsync(
         MethodInfo targetMethod,
         Sender sender,
         SendAttribute sendAttribute)
     {
-        var responseTask =
-            sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
-        var response = await responseTask.ConfigureAwait(ConfigureAwaitOptions.ForceYielding);
+        var response = sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
 
         var returnType = targetMethod.ReturnType;
         var returnTypes = returnType.GetGenericArguments();
@@ -85,4 +69,11 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
         return fromResponseToDataMethod?.Invoke(_converter, [response])!;
     }
+
+    // private static object SendRequestAsync(
+    //     Sender sender,
+    //     SendAttribute sendAttribute)
+    // {
+    //     return sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
+    // }
 }

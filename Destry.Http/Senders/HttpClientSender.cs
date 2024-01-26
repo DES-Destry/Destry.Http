@@ -24,18 +24,30 @@ internal sealed class HttpClientSender : Sender
         string httpMethod,
         string resource)
     {
-        var method = HttpMethod.Parse(httpMethod);
-
-        var request = BuildRequest(method, resource);
-        var response = await _client.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-
-        return new HttpRawResponse
+        try
         {
-            Status = response.StatusCode,
-            // Headers = response.Headers,
-            Data = await response.Content.ReadAsStringAsync()
-        };
+            var method = HttpMethod.Parse(httpMethod);
+
+            var request = BuildRequest(method, resource);
+            var response = await _client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            return new HttpRawResponse
+            {
+                IsError = false,
+                Status = response.StatusCode,
+                Data = await response.Content.ReadAsStringAsync()
+                // Headers = response.Headers,
+            };
+        }
+        catch (Exception e)
+        {
+            return new HttpRawResponse
+            {
+                IsError = true,
+                Exception = e
+            };
+        }
     }
 
     private string ApplyParams(string path)
