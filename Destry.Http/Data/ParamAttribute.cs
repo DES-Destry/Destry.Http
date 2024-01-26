@@ -3,16 +3,16 @@ namespace Destry.Http.Data;
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class ParamAttribute : PrimitiveDataAttribute
 {
-    public override Sender ApplyData(Sender sender, object data)
+    public override HttpSender ApplyData(HttpSender httpSender, object data)
     {
         var type = data.GetType();
 
         if (type.IsPrimitive)
         {
             var dataValue = Convert.ChangeType(data, typeof(string)) as string;
-            sender.AddParam(FieldName ?? type.Name, dataValue ?? "null");
+            httpSender.AddParam(FieldName ?? type.Name, dataValue ?? "null");
 
-            return sender;
+            return httpSender;
         }
 
         if (type.IsClass)
@@ -20,11 +20,11 @@ public sealed class ParamAttribute : PrimitiveDataAttribute
             //TODO: warning log - type is not primitive, FieldName ignored
 
             var queries = GetStringsRecursively(data);
-            foreach (var query in queries) sender.AddParam(query.Key, query.Value);
+            foreach (var query in queries) httpSender.AddParam(query.Key, query.Value);
 
-            return sender;
+            return httpSender;
         }
 
-        return sender;
+        return httpSender;
     }
 }

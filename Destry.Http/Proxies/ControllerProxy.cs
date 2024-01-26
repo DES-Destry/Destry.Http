@@ -9,13 +9,13 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 {
     private string? _baseUrl;
     private Converter? _converter;
-    private Sender? _sender;
+    private HttpSender? _sender;
 
-    public void Initialize(string url, Converter converter, Sender sender)
+    public void Initialize(string url, Converter converter, HttpSender httpSender)
     {
         _baseUrl = url;
         _converter = converter;
-        _sender = sender;
+        _sender = httpSender;
     }
 
     protected override object Invoke(MethodInfo? targetMethod, object?[]? args)
@@ -52,10 +52,10 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
     private object SendRequestAndConvertAsync(
         MethodInfo targetMethod,
-        Sender sender,
+        HttpSender httpSender,
         SendAttribute sendAttribute)
     {
-        var response = sender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
+        var response = httpSender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
 
         var returnType = targetMethod.ReturnType;
         var returnTypes = returnType.GetGenericArguments();

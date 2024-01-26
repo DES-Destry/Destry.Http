@@ -5,7 +5,7 @@ namespace Destry.Http.Data;
 [AttributeUsage(AttributeTargets.Parameter)]
 public abstract class DataAttribute : Attribute
 {
-    public abstract Sender ApplyData(Sender sender, object data);
+    public abstract HttpSender ApplyData(HttpSender httpSender, object data);
 
     protected static Dictionary<string, string> GetStringsRecursively(
         object? data,

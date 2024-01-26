@@ -1,7 +1,7 @@
 namespace Destry.Http;
 
 /// <summary>
-///     Converts <see cref="Sender" />'s result of work to any response object what you want.
+///     Converts <see cref="HttpSender" />'s result of work to any response object what you want.
 /// </summary>
 public abstract class Converter
 {

@@ -3,9 +3,9 @@ namespace Destry.Http.Data;
 [AttributeUsage(AttributeTargets.Parameter)]
 public sealed class BodyAttribute : DataAttribute
 {
-    public override Sender ApplyData(Sender sender, object data)
+    public override HttpSender ApplyData(HttpSender httpSender, object data)
     {
-        sender.SetBody(data);
-        return sender;
+        httpSender.SetBody(data);
+        return httpSender;
     }
 }

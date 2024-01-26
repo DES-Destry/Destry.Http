@@ -15,7 +15,7 @@ public sealed class ControllerBuilder
 {
     private string? _baseUrl;
     private Converter _converter = new JsonConverter();
-    private Sender _sender = new HttpClientSender();
+    private HttpSender _httpSender = new HttpClientHttpSender();
 
     /// <summary>
     ///     Setup base URL. <br /> <br />
@@ -45,14 +45,14 @@ public sealed class ControllerBuilder
     }
 
     /// <summary>
-    ///     Specify your custom <see cref="Sender" /> implementation. <br />
-    ///     It using sender that using <see cref="System.Net.Http.HttpClient" /> to make HTTP requests by default.
+    ///     Specify your custom <see cref="HttpSender" /> implementation. <br />
+    ///     It using httpSender that using <see cref="System.Net.Http.HttpClient" /> to make HTTP requests by default.
     /// </summary>
-    /// <param name="sender">Custom <see cref="Sender" /> implementation.</param>
+    /// <param name="httpSender">Custom <see cref="HttpSender" /> implementation.</param>
     /// <returns>Current instance to be able continue configuring.</returns>
-    public ControllerBuilder WithSender(Sender sender)
+    public ControllerBuilder WithSender(HttpSender httpSender)
     {
-        _sender = sender;
+        _httpSender = httpSender;
         return this;
     }
 
@@ -79,7 +79,7 @@ public sealed class ControllerBuilder
             throw new NullReferenceException(nameof(baseUrl));
 
         var proxy = DispatchProxy.Create<T, ControllerProxy<T>>();
-        ((ControllerProxy<T>) (object) proxy).Initialize(baseUrl, _converter, _sender);
+        ((ControllerProxy<T>) (object) proxy).Initialize(baseUrl, _converter, _httpSender);
 
         return proxy;
     }

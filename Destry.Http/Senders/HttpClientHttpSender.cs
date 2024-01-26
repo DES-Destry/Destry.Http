@@ -4,7 +4,7 @@ using Destry.Http.Parsers;
 
 namespace Destry.Http.Senders;
 
-internal sealed class HttpClientSender : Sender
+internal sealed class HttpClientHttpSender : HttpSender
 {
     private readonly HttpClient _client = new();
 

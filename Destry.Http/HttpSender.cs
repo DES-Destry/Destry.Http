@@ -4,17 +4,17 @@ using Destry.Http.Data;
 namespace Destry.Http;
 
 /// <summary>
-///     <see cref="Sender" /> is abstract class for building code, that will make a HTTP requests. You can use any HTTP
+///     <see cref="HttpSender" /> is abstract class for building code, that will make a HTTP requests. You can use any HTTP
 ///     client which you want in <see cref="SendHttpRequestAsync" />. <br /> <br />
 ///     Don't forget to manage user input with other methods such as <see cref="SetBody" />, <see cref="AddHeader" /> and
 ///     etc...
 /// </summary>
-public abstract class Sender
+public abstract class HttpSender
 {
-    internal Sender NewInstance()
+    internal HttpSender NewInstance()
     {
         var type = GetType();
-        return (Sender) Activator.CreateInstance(type)!;
+        return (HttpSender) Activator.CreateInstance(type)!;
     }
 
     /// <summary>
