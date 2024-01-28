@@ -1,7 +1,11 @@
 namespace Destry.Http.Methods;
 
+/// <summary>
+///     Send a DELETE request.
+/// </summary>
+/// <param name="resource">An HTTP method's path to resource.</param>
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class SendDeleteAttribute(string path) : SendAttribute(path)
+public sealed class SendDeleteAttribute(string resource) : SendAttribute(resource)
 {
-    public override HttpMethod Method => HttpMethod.Delete;
+    internal override HttpMethod Method => HttpMethod.Delete;
 }

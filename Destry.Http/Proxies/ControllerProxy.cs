@@ -55,7 +55,8 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
         HttpSender httpSender,
         SendAttribute sendAttribute)
     {
-        var response = httpSender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Path);
+        var response =
+            httpSender.SendHttpRequestAsync(sendAttribute.Method.Method, sendAttribute.Resource);
 
         var returnType = targetMethod.ReturnType;
         var returnTypes = returnType.GetGenericArguments();

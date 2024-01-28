@@ -1,7 +1,11 @@
 namespace Destry.Http.Methods;
 
+/// <summary>
+///     Send a PUT request.
+/// </summary>
+/// <param name="resource">An HTTP method's path to resource.</param>
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class SendPutAttribute(string path) : SendAttribute(path)
+public sealed class SendPutAttribute(string resource) : SendAttribute(resource)
 {
-    public override HttpMethod Method => HttpMethod.Put;
+    internal override HttpMethod Method => HttpMethod.Put;
 }

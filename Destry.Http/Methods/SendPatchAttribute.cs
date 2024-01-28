@@ -1,7 +1,11 @@
 namespace Destry.Http.Methods;
 
+/// <summary>
+///     Send a PATCH request.
+/// </summary>
+/// <param name="resource">An HTTP method's path to resource.</param>
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class SendPatchAttribute(string path) : SendAttribute(path)
+public sealed class SendPatchAttribute(string resource) : SendAttribute(resource)
 {
-    public override HttpMethod Method => HttpMethod.Patch;
+    internal override HttpMethod Method => HttpMethod.Patch;
 }
