@@ -1,1 +1,1 @@
-docker run -d -p 6789:3000 svenwal/jsonplaceholder
+docker run -d --name jsonplaceholder-for-destry-http -p 6789:3000 svenwal/jsonplaceholder
