@@ -82,14 +82,14 @@ var controller = new ControllerBuilder()
 ## Customization
 
 By default `Destry.Http` using `System.Net.Http.HttpClient`. It's highly recommend to use it, but you still can change
-HTTP request sending behaviour in edge cases. Extend `Sender` class to make you own implementation.
+HTTP request sending behaviour in edge cases. Extend `HttpSender` class to make you own implementation.
 
 ```csharp
 using SomeAwesomeHttpClient;
 
 namespace Destry.AwesomeProject;
 
-internal sealed class YourAwesomeSender : Sender
+internal sealed class YourAwesomeSender : HttpSender
 {
     public override void SetBaseUrl(string url) => // Set base url value
     public override void AddQuery(string name, string value) => // Add query value
