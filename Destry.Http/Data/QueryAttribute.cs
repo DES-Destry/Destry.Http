@@ -1,9 +1,19 @@
 namespace Destry.Http.Data;
 
+/// <summary>
+///     Use to mark method parameter to become a content of HTTP Query.
+/// </summary>
+/// <example>
+///     <code>
+///         // GET /user?id={content of id} will send.
+///         [SendGet("user")]
+///         Task&lt;User&gt; GetUser([Query] int id);
+///     </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class QueryAttribute : PrimitiveDataAttribute
 {
-    public override HttpSender ApplyData(HttpSender httpSender, object data)
+    internal override HttpSender ApplyData(HttpSender httpSender, object data)
     {
         var type = data.GetType();
 

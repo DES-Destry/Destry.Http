@@ -2,12 +2,15 @@ using System.Reflection;
 
 namespace Destry.Http.Data;
 
+/// <summary>
+///     Base class for creating attributes that will attach data from methods parameters into HTTP request.
+/// </summary>
 [AttributeUsage(AttributeTargets.Parameter)]
 public abstract class DataAttribute : Attribute
 {
-    public abstract HttpSender ApplyData(HttpSender httpSender, object data);
+    internal abstract HttpSender ApplyData(HttpSender httpSender, object data);
 
-    protected static Dictionary<string, string> GetStringsRecursively(
+    internal static Dictionary<string, string> GetStringsRecursively(
         object? data,
         int level = 1)
     {

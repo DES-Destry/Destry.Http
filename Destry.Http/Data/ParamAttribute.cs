@@ -1,9 +1,18 @@
 namespace Destry.Http.Data;
 
+/// <summary>
+///     Use to mark method parameter to become a content of HTTP Path Parameter.
+/// </summary>
+/// <example>
+///     <code>
+///         [SendGet("user/{id}")]
+///         Task&lt;User&gt; GetUser([Param] int id);
+///     </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class ParamAttribute : PrimitiveDataAttribute
 {
-    public override HttpSender ApplyData(HttpSender httpSender, object data)
+    internal override HttpSender ApplyData(HttpSender httpSender, object data)
     {
         var type = data.GetType();
 

@@ -1,9 +1,18 @@
 namespace Destry.Http.Data;
 
+/// <summary>
+///     Use to mark method parameter to become a content of HTTP Header.
+/// </summary>
+/// <example>
+///     <code>
+///         [SendPost("open-pentagon")]
+///         Task&lt;ServerResponse&gt; DoAuthorizedStuff([Header("Authorization")] string bearerToken);
+///     </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class HeaderAttribute : PrimitiveDataAttribute
 {
-    public override HttpSender ApplyData(HttpSender httpSender, object data)
+    internal override HttpSender ApplyData(HttpSender httpSender, object data)
     {
         var type = data.GetType();
 
