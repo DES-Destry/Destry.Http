@@ -12,6 +12,29 @@ namespace Destry.Http.Data;
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class ParamAttribute : PrimitiveDataAttribute
 {
+    /// <summary>
+    ///     Default Param creation, that will parse field name to send it to the server.
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [SendPost("api/{value}")]
+    ///         Task&lt;ServerResponse&gt; DoSomeStuff([Param] int value);
+    ///     </code>
+    /// </example>
+    public ParamAttribute() { }
+
+    /// <summary>
+    ///     Param Creation with specified name to send it to the server.
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [SendPost("api/{trivago}")]
+    ///         Task&lt;ServerResponse&gt; DoSomeStuff([Param("trivago")] int value);
+    ///     </code>
+    /// </example>
+    /// <param name="name">Name of value that will provided in request.</param>
+    public ParamAttribute(string name) : base(name) { }
+
     internal override HttpSender ApplyData(HttpSender httpSender, object data)
     {
         var type = data.GetType();

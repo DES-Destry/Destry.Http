@@ -12,6 +12,29 @@ namespace Destry.Http.Data;
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public sealed class HeaderAttribute : PrimitiveDataAttribute
 {
+    /// <summary>
+    ///     Default Header creation, that will parse field name to send it to the server.
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [SendPost("open-pentagon")]
+    ///         Task&lt;ServerResponse&gt; DoAuthorizedStuff([Header] string authorization);
+    ///     </code>
+    /// </example>
+    public HeaderAttribute() { }
+
+    /// <summary>
+    ///     Query Creation with specified name to send it to the server.
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [SendPost("open-pentagon")]
+    ///         Task&lt;ServerResponse&gt; DoAuthorizedStuff([Header("Authorization")] string bearerToken);
+    ///     </code>
+    /// </example>
+    /// <param name="name">Name of value that will provided in request.</param>
+    public HeaderAttribute(string name) : base(name) { }
+
     internal override HttpSender ApplyData(HttpSender httpSender, object data)
     {
         var type = data.GetType();
