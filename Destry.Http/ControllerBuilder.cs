@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Destry.Http.Controller;
 using Destry.Http.Converters;
+using Destry.Http.Data;
 using Destry.Http.Proxies;
 using Destry.Http.Senders;
 
@@ -71,6 +72,7 @@ public sealed class ControllerBuilder
         var type = typeof(T);
 
         var controllerAttribute = type.GetCustomAttribute<ControllerAttribute>(false);
+        var keyValueDataAttributes = type.GetCustomAttributes<KeyValueDataAttribute>(true);
 
         if (controllerAttribute?.BaseUrl is not null)
             baseUrl = controllerAttribute.BaseUrl;
@@ -79,7 +81,8 @@ public sealed class ControllerBuilder
             throw new NullReferenceException(nameof(baseUrl));
 
         var proxy = DispatchProxy.Create<T, ControllerProxy<T>>();
-        ((ControllerProxy<T>) (object) proxy).Initialize(baseUrl, _converter, _httpSender);
+        ((ControllerProxy<T>) (object) proxy).Initialize(baseUrl, _converter, _httpSender,
+            keyValueDataAttributes);
 
         return proxy;
     }

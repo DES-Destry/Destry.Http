@@ -8,14 +8,20 @@ namespace Destry.Http.Proxies;
 internal class ControllerProxy<T> : DispatchProxy where T : class
 {
     private string? _baseUrl;
+    private IEnumerable<KeyValueDataAttribute> _controllerData = [];
     private Converter? _converter;
     private HttpSender? _sender;
 
-    public void Initialize(string url, Converter converter, HttpSender httpSender)
+    public void Initialize(
+        string url,
+        Converter converter,
+        HttpSender httpSender,
+        IEnumerable<KeyValueDataAttribute> controllerData)
     {
         _baseUrl = url;
         _converter = converter;
         _sender = httpSender;
+        _controllerData = controllerData;
     }
 
     protected override object Invoke(MethodInfo? targetMethod, object?[]? args)
@@ -35,6 +41,8 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
         var keyValueDataAttributes = targetMethod.GetCustomAttributes<KeyValueDataAttribute>(true);
 
         // Apply attributes from method like [WithHeader] or [WithQuery]
+        sender = _controllerData.Aggregate(sender,
+            (current, keyValueData) => keyValueData.ApplyData(current, null));
         sender = keyValueDataAttributes.Aggregate(sender,
             (current, keyValueData) => keyValueData.ApplyData(current, null));
 
