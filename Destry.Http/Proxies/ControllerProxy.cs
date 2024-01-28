@@ -32,6 +32,12 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
         if (sendAttribute is null)
             throw new NotCallableMethodException(targetMethod);
 
+        var keyValueDataAttributes = targetMethod.GetCustomAttributes<KeyValueDataAttribute>(true);
+
+        // Apply attributes from method like [WithHeader] or [WithQuery]
+        sender = keyValueDataAttributes.Aggregate(sender,
+            (current, keyValueData) => keyValueData.ApplyData(current, null));
+
         var parameters = targetMethod.GetParameters();
 
         foreach (var (parameter, i) in parameters.Select((parameter, i) => (parameter, i)))
