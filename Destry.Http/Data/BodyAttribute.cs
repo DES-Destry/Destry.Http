@@ -18,9 +18,9 @@ namespace Destry.Http.Data;
 [AttributeUsage(AttributeTargets.Parameter)]
 public sealed class BodyAttribute : DataAttribute
 {
-    internal override HttpSender ApplyData(HttpSender httpSender, object data)
+    internal override HttpSender ApplyData(HttpSender httpSender, object? data)
     {
-        httpSender.SetBody(data);
+        httpSender.SetBody(data ?? new { });
         return httpSender;
     }
 }

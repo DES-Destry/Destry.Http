@@ -15,7 +15,7 @@ public abstract class Converter
     ///     The type, how Data's content will represented in method.
     /// </typeparam>
     /// <returns>
-    ///     Instance of <see cref="T" /> or default value of <see cref="T" /> if some critical error was catched.
+    ///     Instance of <c>T</c> or default value of <c>T</c> if some critical error was caught.
     /// </returns>
     public abstract Task<T?> FromRawResponseToAsync<T>(Task<HttpRawResponse> response);
 }

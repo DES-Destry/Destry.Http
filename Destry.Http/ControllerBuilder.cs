@@ -58,10 +58,10 @@ public sealed class ControllerBuilder
     }
 
     /// <summary>
-    ///     Get <see cref="T" /> interface implementation based on his attributes.
+    ///     Get <c>T</c> interface implementation based on his attributes.
     /// </summary>
     /// <typeparam name="T">Interface that describes API service endpoints with attributes.</typeparam>
-    /// <returns>Instance of <see cref="T" /> with implementation based on attributes.</returns>
+    /// <returns>Instance of <c>T</c> with implementation based on attributes.</returns>
     /// <exception cref="NullReferenceException">
     ///     Base URL must be specified with <see cref="ControllerAttribute" /> param in
     ///     interface or with <see cref="WithBaseUrl" /> method. Else this method will crashed.
