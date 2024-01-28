@@ -36,7 +36,7 @@ internal sealed class HttpClientHttpSender : HttpSender
             {
                 IsError = false,
                 Status = response.StatusCode,
-                Data = await response.Content.ReadAsStringAsync()
+                Data = await response.Content.ReadAsStreamAsync()
                 // Headers = response.Headers,
             };
         }

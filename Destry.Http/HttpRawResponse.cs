@@ -28,7 +28,7 @@ public class HttpRawResponse
     ///     In case when <see cref="IsError" /> equals <see langword="true" /> it will contain <see langword="null" /> value,
     ///     be careful.
     /// </summary>
-    public string? Data { get; set; }
+    public Stream? Data { get; set; }
 
     /// <summary>
     ///     If <see cref="IsError" /> equals <see langword="true" />, therefore <see cref="HttpSender.SendHttpRequestAsync" />
