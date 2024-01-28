@@ -134,6 +134,8 @@ Use attributes to add data to your request:
 - [Header]
 - [Param]
 - [Query]
+- [WithHeader]
+- [WithQuery]
 - [ExcludeFromRequest]
 
 *all data attributes can be used with classes and primitives (except body, that better to use only with classes, but
