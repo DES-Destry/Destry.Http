@@ -1,9 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
+using Destry.Http.Methods;
 
 namespace Destry.Http.Exceptions;
 
+/// <summary>
+///     Called method haven't any <see cref="SendAttribute" />.
+/// </summary>
+/// <param name="method">Method that haven't any <see cref="SendAttribute" />, but it should.</param>
 [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
 public class NotCallableMethodException(MethodInfo method) : Exception(GetMessageFrom(method))
 {
