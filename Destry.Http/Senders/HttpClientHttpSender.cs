@@ -11,7 +11,7 @@ internal sealed class HttpClientHttpSender : HttpSender
     private readonly Dictionary<string, string> _headers = new();
     private readonly Dictionary<string, string> _params = new();
     private readonly Dictionary<string, string> _queries = new();
-    private string _baseUrl;
+    private string? _baseUrl;
     private object? _body;
 
     public override void SetBaseUrl(string url) => _baseUrl = url;
