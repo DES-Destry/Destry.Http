@@ -14,7 +14,13 @@ public class JsonPlaceholderTest(ITestOutputHelper output)
     {
         var response = (await _jsonPlaceholderController.GetAllPosts())?.ToImmutableArray() ?? [];
         Assert.NotEmpty(response);
+        Assert.Equal(100, response.Length);
+    }
 
-        output.WriteLine(response.Length.ToString());
+    [Fact]
+    public async Task ItShouldSendRequestWithPathParam()
+    {
+        var post = await _jsonPlaceholderController.GetPostById(1);
+        Assert.Equal(1, post.Id);
     }
 }
