@@ -19,7 +19,10 @@ public sealed class WithHeaderAttribute : KeyValueDataAttribute
     /// </example>
     public WithHeaderAttribute(string key, string value) : base(key, value) { }
 
-    internal override HttpSender ApplyData(HttpSender httpSender, object? data)
+    internal override HttpSender ApplyData(
+        HttpSender httpSender,
+        string? key = "null",
+        object? data = null)
     {
         httpSender.AddHeader(Key, Value);
         return httpSender;

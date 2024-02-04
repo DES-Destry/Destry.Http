@@ -35,7 +35,10 @@ public sealed class HeaderAttribute : PrimitiveDataAttribute
     /// <param name="name">Name of value that will provided in request.</param>
     public HeaderAttribute(string name) : base(name) { }
 
-    internal override HttpSender ApplyData(HttpSender httpSender, object? data)
+    internal override HttpSender ApplyData(
+        HttpSender httpSender,
+        string? key = "null",
+        object? data = null)
     {
         if (data is null) return httpSender;
 
@@ -44,7 +47,7 @@ public sealed class HeaderAttribute : PrimitiveDataAttribute
         if (type.IsPrimitive)
         {
             var dataValue = Convert.ChangeType(data, typeof(string)) as string;
-            httpSender.AddHeader(FieldName ?? type.Name, dataValue ?? "null");
+            httpSender.AddHeader(FieldName ?? key ?? "null", dataValue ?? "null");
 
             return httpSender;
         }

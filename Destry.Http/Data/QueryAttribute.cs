@@ -38,7 +38,10 @@ public sealed class QueryAttribute : PrimitiveDataAttribute
     /// <param name="name">Name of value that will provided in request.</param>
     public QueryAttribute(string name) : base(name) { }
 
-    internal override HttpSender ApplyData(HttpSender httpSender, object? data)
+    internal override HttpSender ApplyData(
+        HttpSender httpSender,
+        string? key = "null",
+        object? data = null)
     {
         if (data is null) return httpSender;
 
@@ -47,7 +50,7 @@ public sealed class QueryAttribute : PrimitiveDataAttribute
         if (type.IsPrimitive)
         {
             var dataValue = Convert.ChangeType(data, typeof(string)) as string;
-            httpSender.AddQuery(FieldName ?? type.Name, dataValue ?? "null");
+            httpSender.AddQuery(FieldName ?? key ?? "null", dataValue ?? "null");
 
             return httpSender;
         }

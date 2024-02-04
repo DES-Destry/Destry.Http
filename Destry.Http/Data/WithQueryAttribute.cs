@@ -19,7 +19,10 @@ public class WithQueryAttribute : KeyValueDataAttribute
     /// </example>
     public WithQueryAttribute(string key, string value) : base(key, value) { }
 
-    internal override HttpSender ApplyData(HttpSender httpSender, object? data)
+    internal override HttpSender ApplyData(
+        HttpSender httpSender,
+        string? key = "null",
+        object? data = null)
     {
         httpSender.AddQuery(Key, Value);
         return httpSender;
