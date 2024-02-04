@@ -42,9 +42,9 @@ internal class ControllerProxy<T> : DispatchProxy where T : class
 
         // Apply attributes from method like [WithHeader] or [WithQuery]
         sender = _controllerData.Aggregate(sender,
-            (current, keyValueData) => keyValueData.ApplyData(current, null));
+            (current, keyValueData) => keyValueData.ApplyData(current));
         sender = keyValueDataAttributes.Aggregate(sender,
-            (current, keyValueData) => keyValueData.ApplyData(current, null));
+            (current, keyValueData) => keyValueData.ApplyData(current));
 
         var parameters = targetMethod.GetParameters();
 
