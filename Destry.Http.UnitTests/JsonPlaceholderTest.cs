@@ -13,6 +13,7 @@ public class JsonPlaceholderTest(ITestOutputHelper output)
     public async Task ItShouldWork()
     {
         var response = (await _jsonPlaceholderController.GetAllPosts())?.ToImmutableArray() ?? [];
+
         Assert.NotEmpty(response);
         Assert.Equal(100, response.Length);
     }
@@ -20,7 +21,23 @@ public class JsonPlaceholderTest(ITestOutputHelper output)
     [Fact(DisplayName = "Send a request with path parameter")]
     public async Task ItShouldSendRequestWithPathParam()
     {
-        var post = await _jsonPlaceholderController.GetPostById(1);
-        Assert.Equal(1, post.Id);
+        const int postId = 1;
+
+        var post = await _jsonPlaceholderController.GetPostById(postId);
+
+        Assert.Equal(postId, post.Id);
+    }
+
+    [Fact(DisplayName = "Send a request with query")]
+    public async Task ItShouldSendRequestWithQuery()
+    {
+        const int postId = 1;
+
+        var comments =
+            (await _jsonPlaceholderController.GetCommentsForPost(postId))?.ToImmutableArray() ?? [];
+        var isAllCommentsRelatedWithCorrectPost = comments.All(comment => comment.PostId == postId);
+
+        Assert.NotEmpty(comments);
+        Assert.True(isAllCommentsRelatedWithCorrectPost);
     }
 }
