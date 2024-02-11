@@ -18,4 +18,8 @@ public interface IJsonPlaceholderController
 
     [SendGet("comments")]
     Task<IEnumerable<Comment>> GetCommentsForPost([Query] int postId);
+
+    [WithQuery("postId", "1")]
+    [SendGet("comments")]
+    Task<IEnumerable<Comment>> GetCommentsForPredefinedPost();
 }

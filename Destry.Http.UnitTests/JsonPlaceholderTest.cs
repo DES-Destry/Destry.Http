@@ -40,4 +40,18 @@ public class JsonPlaceholderTest(ITestOutputHelper output)
         Assert.NotEmpty(comments);
         Assert.True(isAllCommentsRelatedWithCorrectPost);
     }
+
+    [Fact(DisplayName = "Send a request with predefined query")]
+    public async Task ItShouldSendRequestWithPredefinedQuery()
+    {
+        const int postId = 1;
+
+        var comments =
+            (await _jsonPlaceholderController.GetCommentsForPredefinedPost())?.ToImmutableArray() ??
+            [];
+        var isAllCommentsRelatedWithCorrectPost = comments.All(comment => comment.PostId == postId);
+
+        Assert.NotEmpty(comments);
+        Assert.True(isAllCommentsRelatedWithCorrectPost);
+    }
 }
